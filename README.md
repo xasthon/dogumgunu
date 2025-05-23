@@ -1,40 +1,53 @@
-# Blowing out the Birthday Cake Candles with JavaScript
+# Interactive Quiz & Surprise Gift 🎁
 
-Turn off the Candles of your birthday cake with Html,Css and Javascript!
+An engaging web application that combines fun quiz elements with an interactive surprise gift. Test your knowledge and unlock a special celebration experience!
 
-## Live Demo
+## What to Expect ✨
 
-You can see the [LIVE DEMO HERE](https://mohammadshekari.github.io/Birthday-Cake-With-Blowing-Candle/index.html).
+- Interactive quiz interface
+- Real-time audio interaction
+- Visual feedback system
+- Responsive design
+- A special surprise reward for completing all challenges
 
+## Technologies Used 🛠
 
+- HTML5
+- JavaScript
+- Web Audio API
+- Rollup (for bundling)
 
-<img src="https://github.com/Mohammadshekari/Birthday-Cake-With-Blowing-Candle/blob/main/screenshots/cake-on.jpg?raw=true" width="600">
-<img src="https://github.com/Mohammadshekari/Birthday-Cake-With-Blowing-Candle/blob/main/screenshots/cake-off.jpg?raw=true" width="600">
-
-## Installation
+## Getting Started 🚀
 
 1. Clone the repository:
 
-    ```bash
-    git clone https://github.com/Mohammadshekari/Birthday-Cake-With-Blowing-Candle.git
-    ```
+```bash
+git clone [repository-url]
+```
 
-2. Navigate to the project directory:
+2. Install dependencies:
 
-    ```bash
-    cd Birthday-Cake-With-Blowing-Candle
-    ```
-3. open `index.html` in browser.
+```bash
+npm install
+```
 
-## Audio Detection by [WeBAD](https://github.com/solyarisoftware/WeBAD)
+3. Build the project:
 
-WeBAD stay for Web Browser Audio Detection/Speech Recording Events API.
-Pronounce it we-bad or web-ad.
+```bash
+npm run build
+```
 
-## Cake code in [CodeOpen](https://codepen.io/fazlurr/pen/gPMJMK)
+4. Open `index.html` in your web browser
 
-The HTML and CSS for the cake design in this project have been copied from this source.
+## Browser Compatibility 🌐
 
-## License
+This project works best in modern browsers:
 
-This project is licensed under the MIT License
+- Chrome (recommended)
+- Firefox
+- Safari
+- Edge
+
+## License 📝
+
+This project is open source and available under the MIT License.
