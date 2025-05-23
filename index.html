@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Birthday Cake 🎂</title>
+    <link rel="shortcut icon" href="#" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+      :root {
+        --primary-color: #ff6b95;
+        --primary-hover: #ff577f;
+        --background-color: #1e1e2e;
+        --text-color: #ffffff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        text-align: center;
+        padding: 2rem 1rem;
+      }
+
+      h1 {
+        font-weight: 500;
+        font-size: clamp(1.5rem, 5vw, 2.5rem);
+        margin-bottom: 1rem;
+        color: var(--text-color);
+      }
+
+      button {
+        font-family: "Poppins", sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 24px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        margin-bottom: 1rem;
+      }
+
+      button:hover {
+        background-color: var(--primary-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
+
+      #cake-container {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        height: 400px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 100px;
+      }
+
+      .cake {
+        position: relative;
+        width: 280px;
+        height: 220px;
+      }
+
+      .plate {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 320px;
+        height: 40px;
+        background: linear-gradient(to bottom, #3a3a50, #2a2a3c);
+        border-radius: 50%;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .layer {
+        position: absolute;
+        width: 280px;
+        height: 80px;
+        border-radius: 8px;
+        background: linear-gradient(to bottom, #ff85a2, #ff7096);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .layer-top {
+        top: 0;
+        height: 60px;
+        width: 240px;
+        left: 20px;
+        border-radius: 8px 8px 0 0;
+      }
+
+      .layer-middle {
+        top: 60px;
+        height: 60px;
+        width: 260px;
+        left: 10px;
+      }
+
+      .layer-bottom {
+        top: 120px;
+        height: 60px;
+      }
+
+      .icing {
+        position: absolute;
+        top: 0;
+        left: 20px;
+        width: 240px;
+        height: 15px;
+        background-color: #ffdfef;
+        border-radius: 8px 8px 0 0;
+      }
+
+      .decoration {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #fff;
+      }
+
+      .decoration1 {
+        top: 80px;
+        left: 40px;
+      }
+      .decoration2 {
+        top: 100px;
+        left: 100px;
+      }
+      .decoration3 {
+        top: 70px;
+        left: 160px;
+      }
+      .decoration4 {
+        top: 90px;
+        left: 220px;
+      }
+      .decoration5 {
+        top: 150px;
+        left: 60px;
+      }
+      .decoration6 {
+        top: 140px;
+        left: 140px;
+      }
+      .decoration7 {
+        top: 160px;
+        left: 200px;
+      }
+
+      .candle {
+        position: absolute;
+        top: -60px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 12px;
+        height: 60px;
+        background: linear-gradient(to bottom, #fcf5c7, #fdee87);
+        border-radius: 6px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+      }
+
+      .candle:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 12px;
+        height: 4px;
+        border-radius: 6px 6px 0 0;
+        background-color: #fdee87;
+      }
+
+      .flame {
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 14px;
+        height: 30px;
+        background: linear-gradient(to bottom, #ffeb3b, #ff9800);
+        border-radius: 50% 50% 20% 20%;
+        box-shadow: 0 0 10px rgba(255, 165, 0, 0.5),
+          0 0 20px rgba(255, 165, 0, 0.3), 0 0 60px rgba(255, 165, 0, 0.3);
+        transform-origin: 50% 90%;
+        animation: flicker 1.5s ease-in-out alternate infinite;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+        z-index: 10;
+      }
+
+      .flame.blown {
+        opacity: 0;
+        animation: none;
+      }
+
+      @keyframes flicker {
+        0% {
+          transform: translateX(-50%) scaleY(1) rotate(2deg);
+          opacity: 0.9;
+        }
+        25% {
+          transform: translateX(-50%) scaleY(1.1) rotate(-2deg);
+          opacity: 1;
+        }
+        50% {
+          transform: translateX(-50%) scaleY(0.9) rotate(3deg);
+          opacity: 0.95;
+        }
+        75% {
+          transform: translateX(-50%) scaleY(1.05) rotate(-1deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(-50%) scaleY(1) rotate(1deg);
+          opacity: 0.9;
+        }
+      }
+
+      #cake-container .cake-off {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      #cake-container.done .cake-off {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      #cake-container.done .flame {
+        opacity: 0 !important;
+        transform: translateY(-10px) scale(0.5);
+      }
+
+      .cake-message {
+        margin-top: 2rem;
+        opacity: 0;
+        transition: opacity 1s ease;
+      }
+
+      #cake-container.done .cake-message {
+        opacity: 1;
+      }
+
+      .wish-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #ff6b95;
+        opacity: 0;
+        transition: opacity 1s ease;
+      }
+
+      .wish-text {
+        font-size: 1.2rem;
+        font-weight: 300;
+        color: #ccc;
+        opacity: 0;
+        transition: opacity 1s ease;
+      }
+
+      #cake-container.done .wish-title,
+      #cake-container.done .wish-text {
+        opacity: 1;
+      }
+
+      .instructions {
+        position: absolute;
+        bottom: 30px;
+        width: 100%;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #999;
+        opacity: 0.8;
+      }
+
+      /* Smoke effect after blowing */
+      .smoke {
+        position: absolute;
+        top: -40px;
+        left: 50%;
+        margin-left: -10px;
+        width: 20px;
+        height: 0;
+        z-index: 9;
+        opacity: 0;
+      }
+
+      #cake-container.done .smoke {
+        animation: smoke 2s ease-out forwards;
+      }
+
+      @keyframes smoke {
+        0% {
+          height: 0;
+          opacity: 0;
+        }
+        20% {
+          height: 20px;
+          opacity: 0.5;
+        }
+        40% {
+          height: 40px;
+          opacity: 0.4;
+        }
+        60% {
+          height: 60px;
+          opacity: 0.3;
+        }
+        80% {
+          height: 80px;
+          opacity: 0.2;
+        }
+        100% {
+          height: 100px;
+          opacity: 0;
+        }
+      }
+
+      .smoke:before,
+      .smoke:after {
+        content: "";
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.7);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      }
+
+      .smoke:before {
+        animation: smokeLeft 2s ease-out forwards;
+      }
+
+      .smoke:after {
+        animation: smokeRight 2s ease-out forwards;
+      }
+
+      @keyframes smokeLeft {
+        0% {
+          transform: translate(0, 0) scale(1);
+        }
+        100% {
+          transform: translate(-20px, -80px) scale(2);
+          opacity: 0;
+        }
+      }
+
+      @keyframes smokeRight {
+        0% {
+          transform: translate(0, 0) scale(1);
+        }
+        100% {
+          transform: translate(20px, -80px) scale(2);
+          opacity: 0;
+        }
+      }
+
+      /* Confetti container */
+      #confetti-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1000;
+      }
+
+      #riddle-container {
+        width: 100%;
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: #2a2a3c;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      #riddle-text {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+        color: #ffffff;
+        text-align: center;
+        width: 100%;
+      }
+
+      #answer-input {
+        width: 80%;
+        padding: 12px;
+        border: 2px solid #ff6b95;
+        border-radius: 8px;
+        background-color: #1e1e2e;
+        color: #ffffff;
+        font-family: "Poppins", sans-serif;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+
+      #submit-answer {
+        width: 50%;
+      }
+
+      #error-message {
+        color: #ff6b95;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        display: none;
+      }
+
+      #progress-container {
+        width: 100%;
+        max-width: 600px;
+        margin: 1rem auto;
+        text-align: center;
+      }
+
+      #progress-bar {
+        width: 100%;
+        height: 10px;
+        background-color: #2a2a3c;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-bottom: 0.5rem;
+      }
+
+      #progress-fill {
+        width: 0%;
+        height: 100%;
+        background-color: #ff6b95;
+        transition: width 0.3s ease;
+      }
+
+      #progress-text {
+        font-size: 0.9rem;
+        color: #ffffff;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          padding: 1rem;
+        }
+
+        #cake-container {
+          margin-top: 50px;
+          height: 300px;
+        }
+
+        .cake {
+          transform: scale(0.8);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .cake {
+          transform: scale(0.6);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1 class="hidden">Doğum Günü Pastası 🎂</h1>
+    <button id="start" class="hidden">Mumu Üfle</button>
+    <button style="display: none" id="startconsoledebug">
+      konsol günlüklerini etkinleştir
+    </button>
+    <button style="display: none" id="stopconsoledebug">
+      konsol günlüklerini devre dışı bırak
+    </button>
+
+    <div id="riddle-container">
+      <div id="riddle-text"></div>
+      <input
+        type="text"
+        id="answer-input"
+        placeholder="Cevabınızı buraya yazın..."
+      />
+      <button id="submit-answer">Cevapla</button>
+      <div id="error-message">Yanlış cevap! Tekrar deneyin.</div>
+    </div>
+
+    <div id="progress-container">
+      <div id="progress-bar">
+        <div id="progress-fill"></div>
+      </div>
+      <div id="progress-text">Bilmece: 0/5</div>
+    </div>
+
+    <div id="cake-container" class="hidden">
+      <div class="cake">
+        <div class="plate"></div>
+        <div class="layer layer-bottom"></div>
+        <div class="layer layer-middle"></div>
+        <div class="layer layer-top"></div>
+        <div class="icing"></div>
+        <div class="decoration decoration1"></div>
+        <div class="decoration decoration2"></div>
+        <div class="decoration decoration3"></div>
+        <div class="decoration decoration4"></div>
+        <div class="decoration decoration5"></div>
+        <div class="decoration decoration6"></div>
+        <div class="decoration decoration7"></div>
+        <div class="candle">
+          <div id="flame" class="flame"></div>
+          <div class="smoke"></div>
+        </div>
+      </div>
+
+      <div class="cake-message">
+        <h2 class="wish-title cake-off">❣ İyi Ki Doğdun Elif ❣</h2>
+        <p class="wish-text cake-off">
+          ❤ Mutluluk ve sevgi dolu bir yıl geçirmeni dilerim ❤
+        </p>
+      </div>
+    </div>
+
+    <p class="instructions hidden">
+      Mumu üflemek için lütfen butona tıklayın ve mikrofonunuza üfleyin.
+    </p>
+
+    <div id="confetti-container"></div>
+    <script type="text/javascript" src="volume-meter.js"></script>
+    <script type="text/javascript" src="audioDetectionConfig.js"></script>
+    <script type="text/javascript" src="audioDetection.js"></script>
+    <script type="text/javascript" src="audioStream.js"></script>
+    <script type="text/javascript" src="demoAudioRecorder.js"></script>
+    <script
+      type="text/javascript"
+      src="demoAudioDetectionListeners.js"
+    ></script>
+    <script type="text/javascript" src="cake.js"></script>
+    <script type="text/javascript" src="demo.js"></script>
+
+    <script>
+      window.onload = function () {
+        const riddles = [
+          {
+            question:
+              "Lise yolları, 11-C'nin gölgesi, kayıtlarda bir iz. Ne adım ne soyadım, ama her yoklamada ben varım",
+            answer: "1769",
+          },
+          {
+            question:
+              "Ona seslendiğinde bir başkaydı, o kendini söylediğinde her şey değişti",
+            answer: "mert",
+          },
+          {
+            question:
+              "Sonra masaya sandalyeler geldi, her biri başka renkte ama aynı sessizlikte. Işıklı bir yerdi orası, kalabalığın içinde bir köşe. Herkes görür sandık, ama sadece biz fark ettik bir kapı aralığını. ",
+            answer: "gizli oda",
+          },
+          {
+            question:
+              "Herkes yerini zamanında aldı, ben biraz sonra çıktım yola. Ne eksiktim, ne fazla — sadece birkaç gün farkla",
+            answer: "10",
+          },
+          {
+            question:
+              "Uçmadık ama yüksekteydik, karanlığa karışan ekranlar, ayrı şehirlerde aynı ışıkla aydınlandı. Sorular vardı, çokça. Cevaplar, geceden çıkıp gündüzün gürültüsüne karıştı. Ve biz, sevmemeyi sevdik. Nereden başlasa hep havada kalan o yazlık anı… Nedir bizi orada tuttu, ama orada olmayan?",
+            answer: "drone",
+          },
+        ];
+
+        let currentRiddleIndex = 0;
+        let solvedRiddles = 0;
+        let isBlowing = false;
+        let audioStream = null;
+        let analyser = null;
+        let isMicrophoneActive = false;
+        let lastVolume = 0;
+        let volumeHistory = [];
+
+        const riddleText = document.getElementById("riddle-text");
+        const answerInput = document.getElementById("answer-input");
+        const submitButton = document.getElementById("submit-answer");
+        const progressFill = document.getElementById("progress-fill");
+        const progressText = document.getElementById("progress-text");
+        const riddleContainer = document.getElementById("riddle-container");
+        const cakeContainer = document.getElementById("cake-container");
+        const flame = document.getElementById("flame");
+        const startButton = document.getElementById("start");
+        const instructions = document.querySelector(".instructions");
+
+        function updateProgress() {
+          const progress = (solvedRiddles / riddles.length) * 100;
+          progressFill.style.width = `${progress}%`;
+          progressText.textContent = `Bilmece: ${solvedRiddles}/${riddles.length}`;
+        }
+
+        function showNextRiddle() {
+          if (currentRiddleIndex < riddles.length) {
+            riddleText.textContent = riddles[currentRiddleIndex].question;
+            answerInput.value = "";
+            answerInput.focus();
+          } else {
+            showCake();
+          }
+        }
+
+        function showCake() {
+          riddleContainer.classList.add("hidden");
+          cakeContainer.classList.remove("hidden");
+          document.querySelector("h1").classList.remove("hidden");
+          startButton.classList.remove("hidden");
+          instructions.classList.remove("hidden");
+
+          // Set initial button text
+          startButton.textContent = "Mumu Üflemek İçin Basın";
+          instructions.textContent =
+            "Mumu üflemek için lütfen butona tıklayın ve mikrofonunuza üfleyin.";
+        }
+
+        function handleVolume(volume) {
+          if (!isMicrophoneActive) return;
+
+          // Keep track of volume history
+          volumeHistory.push(volume);
+          if (volumeHistory.length > 10) {
+            volumeHistory.shift();
+          }
+
+          // Calculate average volume
+          const avgVolume =
+            volumeHistory.reduce((a, b) => a + b, 0) / volumeHistory.length;
+
+          // Debug için volume değerini göster
+
+          // Üfleme algılama
+          if (volume > 0.3 && avgVolume > 0.2 && !isBlowing) {
+            isBlowing = true;
+
+            // Mumu söndür
+            flame.classList.add("blown");
+
+            // Pastayı göster
+            cakeContainer.classList.add("done");
+
+            // Trigger confetti
+            if (typeof confetti !== "undefined") {
+              confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+              });
+            }
+
+            // Show cake message
+            const cakeMessage = document.querySelector(".cake-message");
+            if (cakeMessage) {
+              cakeMessage.style.opacity = "1";
+              // Mesaj elementlerini göster
+              const wishTitle = cakeMessage.querySelector(".wish-title");
+              const wishText = cakeMessage.querySelector(".wish-text");
+              if (wishTitle) wishTitle.style.opacity = "1";
+              if (wishText) wishText.style.opacity = "1";
+            }
+          } else if (volume < 0.1 && avgVolume < 0.1) {
+            isBlowing = false;
+          }
+        }
+
+        async function startMicrophone() {
+          if (isMicrophoneActive) return;
+
+          try {
+            // Initialize audio system
+            window.AudioContext =
+              window.AudioContext || window.webkitAudioContext;
+            if (!window.audioContext) {
+              window.audioContext = new AudioContext();
+            }
+
+            // Request audio stream
+            audioStream = await navigator.mediaDevices.getUserMedia({
+              audio: {
+                echoCancellation: false,
+                noiseSuppression: false,
+                autoGainControl: false,
+              },
+            });
+
+            // Create audio source and analyser
+            const source =
+              window.audioContext.createMediaStreamSource(audioStream);
+            analyser = createAudioMeter(window.audioContext);
+            source.connect(analyser);
+
+            // Resume audio context
+            await window.audioContext.resume();
+
+            // Update UI
+            isMicrophoneActive = true;
+            startButton.textContent = "Mumu Üfleyebilirsiniz";
+            instructions.textContent =
+              "Mumu üflemek için mikrofonunuza üfleyin.";
+          } catch (err) {
+            console.error("Error starting microphone:", err);
+            alert(
+              "Mikrofon başlatılamadı. Lütfen mikrofon izinlerini kontrol edin."
+            );
+          }
+        }
+
+        // Add event listener for submit button
+        submitButton.addEventListener("click", () => {
+          const userAnswer = answerInput.value.toLowerCase().trim();
+          const correctAnswer =
+            riddles[currentRiddleIndex].answer.toLowerCase();
+          const errorMessage = document.getElementById("error-message");
+
+          if (userAnswer === correctAnswer) {
+            errorMessage.style.display = "none";
+            solvedRiddles++;
+            updateProgress();
+            currentRiddleIndex++;
+            showNextRiddle();
+          } else {
+            errorMessage.style.display = "block";
+          }
+        });
+
+        // Add event listener for enter key
+        answerInput.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") {
+            submitButton.click();
+          }
+        });
+
+        // Add event listener for start button
+        startButton.addEventListener("click", startMicrophone);
+
+        // Start the game
+        showNextRiddle();
+        updateProgress();
+
+        // Export handleVolume function to global scope
+        window.handleVolume = handleVolume;
+      };
+    </script>
+  </body>
+</html>

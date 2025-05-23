@@ -1,0 +1,14 @@
+{
+  "name": "birthday-cake",
+  "version": "1.0.0",
+  "description": "Interactive birthday cake with blowing candle animation",
+  "main": "index.html",
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c -w"
+  },
+  "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.4",
+    "rollup": "^4.9.1"
+  }
+}
